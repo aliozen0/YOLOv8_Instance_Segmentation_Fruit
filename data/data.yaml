@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 3
+names: ['kivi', 'mango', 'orange']
+
+roboflow:
+  workspace: demo-neseg
+  project: fruits-v8tdz
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/demo-neseg/fruits-v8tdz/dataset/2
