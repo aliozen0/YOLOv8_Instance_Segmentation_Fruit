@@ -54,13 +54,15 @@ Eğer modeli Google Colab üzerinde eğitmek isterseniz, aşağıdaki adımları
 
 1. Google Colab'e gidin.
 2. `notebooks/model_training.ipynb` dosyasını yükleyin ve çalıştırın.
-3. Eğitim tamamlandığında, model dosyasını Google Drive'a kaydedin.
+3. '/data' klasörü ile modele etiketlenmiş veriler ile eğitin. 
+4. Eğitim tamamlandığında, model dosyasını Google Drive'a kaydedin.
 
 ## Kullanım
 
 ### 1. Görüntü İndirme
 
 İlk olarak, internetten meyve görüntülerini indirmek için aşağıdaki komutu çalıştırın:
+Not: Verileri etiketlemek için roboflow.com kullanılabilir.
 
 ```bash
 python scripts/download_images.py
@@ -72,13 +74,14 @@ Modeli eğitmek için `notebooks/training.ipynb` dosyasını kullanın. Google C
 
 ### 3. Tahmin ve Sonuç Görüntüleme
 
-Eğitimli modeli kullanarak tahmin yapmak ve sonuçları görüntülemek için:
+Tkinter kütüphanesi kullanılarak oluşturulmuş arayüz uygulması ile eğitimli modeli kullanarak tahmin yapmak ve sonuçları görüntülemek için :
 
 ```bash
 python scripts/app.py
 ```
 
 Bu komut, bir grafiksel kullanıcı arayüzü (GUI) açarak görüntü seçmenizi ve modelin tahmin sonuçlarını ayrı bir pencerede görmenizi sağlar.
+![image](https://github.com/aliozen0/YOLOv8_Instance_Segmentation_Fruit/assets/113714644/d125046e-3843-4a5e-9875-e0227002d366)
 
 ## Dosya ve Klasör Açıklamaları
 
@@ -91,6 +94,9 @@ Bu komut, bir grafiksel kullanıcı arayüzü (GUI) açarak görüntü seçmeniz
 - **requirements.txt**: Proje bağımlılıklarını içeren dosya.
 
 ## Sonuçlar
-
+Modelin eğitim sonucunda alınan değerler aşağıda bulunmaktadır.
+Precision: 0.8388792404906095
+Recall: 0.7654271224458425
+F1-Score (mAP50-95): 0.7169014069637037
 
 
