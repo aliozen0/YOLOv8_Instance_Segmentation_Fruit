@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 
 # Modeli yükleyin
-model = YOLO('best.pt')
+model = YOLO('models/best.pt')
 
 # Tkinter uygulamasını başlat
 root = tk.Tk()
