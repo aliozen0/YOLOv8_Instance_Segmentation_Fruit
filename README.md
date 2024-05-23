@@ -62,6 +62,7 @@ Eğer modeli Google Colab üzerinde eğitmek isterseniz, aşağıdaki adımları
 ### 1. Görüntü İndirme
 
 İlk olarak, internetten meyve görüntülerini indirmek için aşağıdaki komutu çalıştırın:
+
 Not: Verileri etiketlemek için roboflow.com kullanılabilir.
 
 ```bash
@@ -95,8 +96,11 @@ Bu komut, bir grafiksel kullanıcı arayüzü (GUI) açarak görüntü seçmeniz
 
 ## Sonuçlar
 Modelin eğitim sonucunda alınan değerler aşağıda bulunmaktadır.
+
 Precision: 0.8388792404906095
+
 Recall: 0.7654271224458425
+
 F1-Score (mAP50-95): 0.7169014069637037
 
 
