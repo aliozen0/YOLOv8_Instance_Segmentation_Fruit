@@ -66,12 +66,12 @@ Eğer modeli Google Colab üzerinde eğitmek isterseniz, aşağıdaki adımları
 Not: Verileri etiketlemek için roboflow.com kullanılabilir.
 
 ```bash
-python scripts/download_images.py
+python scripts/data_scrraping.py
 ```
 
 ### 2. Model Eğitimi
 
-Modeli eğitmek için `notebooks/training.ipynb` dosyasını kullanın. Google Colab üzerinde çalıştırarak '/data' klasöründeki etiketlenmiş veriler ile modeli eğitebilirsiniz. Eğitim tamamlandıktan sonra model ağırlıklarını `models/best_model.pt` dosyasına kaydedin.
+Modeli eğitmek için `notebooks/model_training.ipynb` dosyasını kullanın. Google Colab üzerinde çalıştırarak '/data' klasöründeki etiketlenmiş veriler ile modeli eğitebilirsiniz. Eğitim tamamlandıktan sonra model ağırlıklarını `models/best.pt` dosyasına kaydedin.
 
 ### 3. Tahmin ve Sonuç Görüntüleme
 
