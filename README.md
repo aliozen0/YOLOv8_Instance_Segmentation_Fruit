@@ -66,7 +66,7 @@ Eğer modeli Google Colab üzerinde eğitmek isterseniz, aşağıdaki adımları
 Not: Verileri etiketlemek için roboflow.com kullanılabilir.
 
 ```bash
-python scripts/data_scrraping.py
+python scripts/data_scraping.py
 ```
 
 ### 2. Model Eğitimi
