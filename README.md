@@ -71,7 +71,7 @@ python scripts/download_images.py
 
 ### 2. Model Eğitimi
 
-Modeli eğitmek için `notebooks/training.ipynb` dosyasını kullanın. Google Colab üzerinde çalıştırarak modeli eğitebilirsiniz. Eğitim tamamlandıktan sonra model ağırlıklarını `models/best_model.pt` dosyasına kaydedin.
+Modeli eğitmek için `notebooks/training.ipynb` dosyasını kullanın. Google Colab üzerinde çalıştırarak '/data' klasöründeki etiketlenmiş veriler ile modeli eğitebilirsiniz. Eğitim tamamlandıktan sonra model ağırlıklarını `models/best_model.pt` dosyasına kaydedin.
 
 ### 3. Tahmin ve Sonuç Görüntüleme
 
