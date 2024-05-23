@@ -1,5 +1,5 @@
 
-# YOLOv8 Fruit Instance_Segmentation
+# YOLOv8 Fruit Instance Segmentation
 
 Bu proje, YOLOv8 kullanarak meyve tespiti yapmayı amaçlar. Proje kapsamında mango, kivi ve portakal gibi meyvelerin görüntüleri kullanılmıştır. Bu proje, veri indirme, model eğitimi ve tahmin yapma gibi adımları içermektedir.
 
