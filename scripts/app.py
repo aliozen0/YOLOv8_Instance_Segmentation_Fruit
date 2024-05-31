@@ -1,84 +1,73 @@
-import tkinter as tk
-from tkinter import filedialog
-from tkinter import ttk
-from PIL import Image, ImageTk
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QFileDialog, QTextEdit
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import Qt
 from ultralytics import YOLO
-import numpy as np
 import cv2
+import numpy as np
 
 # Modeli yükleyin
-model = YOLO('models/best.pt')
+model = YOLO('models/b.pt')
 
-# Tkinter uygulamasını başlat
-root = tk.Tk()
-root.title("YOLOv8 Görüntü Tanıma")
-root.geometry("800x600")
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Retinopati Hasta Takip Ekranı")
+        self.setGeometry(100, 100, 1200, 800)
 
-# Görüntü etiketi
-image_label = tk.Label(root)
-image_label.pack()
+        # Ana düzeni oluştur
+        self.centralWidget = QWidget(self)
+        self.setCentralWidget(self.centralWidget)
+        self.mainLayout = QHBoxLayout()
+        self.centralWidget.setLayout(self.mainLayout)
 
-# Doğruluk seviyesi etiketi
-confidence_value_label = tk.Label(root, text="Doğruluk Seviyesi: 50%", font=("Helvetica", 14))
-confidence_value_label.pack()
+        # Sol taraftaki düğmeler
+        self.leftLayout = QVBoxLayout()
+        self.mainLayout.addLayout(self.leftLayout)
+        self.btn_select_patient = QPushButton("Hasta Seç", self)
+        self.btn_add_patient = QPushButton("Hasta Ekle", self)
+        self.btn_patient_details = QPushButton("Hasta Detayı", self)
+        self.btn_past_images = QPushButton("Geçmiş Görüntüler", self)
+        self.btn_select_image = QPushButton("Görüntüyü Seç", self)
+        self.btn_select_image.clicked.connect(self.select_image)
+        self.leftLayout.addWidget(self.btn_select_patient)
+        self.leftLayout.addWidget(self.btn_add_patient)
+        self.leftLayout.addWidget(self.btn_patient_details)
+        self.leftLayout.addWidget(self.btn_past_images)
+        self.leftLayout.addWidget(self.btn_select_image)
 
-# Görüntü seçme fonksiyonu
-def select_image():
-    file_path = filedialog.askopenfilename()
-    if file_path:
-        image = Image.open(file_path)
-        image.thumbnail((400, 400))  # Görüntüyü yeniden boyutlandır
-        img = ImageTk.PhotoImage(image)
-        image_label.configure(image=img)
-        image_label.image = img
-        process_image(file_path)
+        # Orta kısımdaki görüntü
+        self.imageLabel = QLabel(self)
+        self.mainLayout.addWidget(self.imageLabel)
 
-# Görüntü işleme ve tahmin yapma fonksiyonu
-def process_image(file_path):
-    confidence = confidence_scale.get() / 100
-    results = model.predict(source=file_path, conf=confidence)
-    
-    # İlk sonucu al
-    result = results[0]
-    
-    # Sonuçları numpy array olarak alın
-    result_image = result.plot(show=False)
-    
-    # OpenCV ile görüntüyü tkinter'da gösterilecek şekilde yeniden boyutlandırın
-    img = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
-    img = Image.fromarray(img)
-    img = img.resize((800, 600), Image.ANTIALIAS)
-    img_tk = ImageTk.PhotoImage(img)
-    
-    show_result_window(img_tk)
+        # Sağ taraftaki hasta bilgisi ve raporlama
+        self.rightLayout = QVBoxLayout()
+        self.patient_info = QLabel("Hasta Bilgisi", self)
+        self.patient_info.setStyleSheet("background-color: gray; width: 200px; height: 100px")
+        self.report_text = QTextEdit(self)
+        self.btn_diagnosis = QPushButton("Tanı Koy", self)
+        self.rightLayout.addWidget(self.patient_info)
+        self.rightLayout.addWidget(self.report_text)
+        self.rightLayout.addWidget(self.btn_diagnosis)
+        self.mainLayout.addLayout(self.rightLayout)
 
-# Doğruluk seviyesini güncelleme fonksiyonu
-def update_confidence_label(value):
-    confidence_value_label.config(text=f"Doğruluk Seviyesi: {int(float(value))}%")
+    def select_image(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Görüntüyü Seç", "", "Image files (*.jpg *.jpeg *.png)")
+        if file_path:
+            self.process_image(file_path)
 
-# Sonuçları ayrı pencerede gösterme fonksiyonu
-def show_result_window(img_tk):
-    result_window = tk.Toplevel(root)
-    result_window.title("Tahmin Sonuçları")
-    result_window.geometry("800x600")
-    
-    result_canvas = tk.Canvas(result_window, width=800, height=600)
-    result_canvas.pack()
-    
-    result_canvas.create_image(0, 0, anchor=tk.NW, image=img_tk)
-    result_canvas.image = img_tk
+    def process_image(self, file_path):
+        results = model.predict(source=file_path, conf=0.5)
+        result = results[0]
+        result_image = result.plot(show=False)
+        img = cv2.cvtColor(np.array(result_image), cv2.COLOR_BGR2RGB)
+        h, w, ch = img.shape
+        bytes_per_line = ch * w
+        convert_to_Qt_format = QImage(img.data, w, h, bytes_per_line, QImage.Format_RGB888)
+        p = QPixmap.fromImage(convert_to_Qt_format)
+        self.imageLabel.setPixmap(p.scaled(800, 600, Qt.KeepAspectRatio))
 
-# Görüntü seçme butonu
-select_button = tk.Button(root, text="Görüntü Seç", command=select_image)
-select_button.pack(pady=10)
-
-# Doğruluk seviyesi kaydırıcısı
-confidence_label = tk.Label(root, text="Doğruluk Seviyesi:")
-confidence_label.pack()
-
-confidence_scale = ttk.Scale(root, from_=0, to=100, orient="horizontal", command=update_confidence_label)
-confidence_scale.set(50)  # Başlangıç değeri
-confidence_scale.pack(pady=10)
-
-# Uygulamayı çalıştır
-root.mainloop()
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+sys.exit(app.exec_())
